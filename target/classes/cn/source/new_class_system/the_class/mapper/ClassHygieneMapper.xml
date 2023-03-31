@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.ClassHygieneMapper">
+
+    <insert id="insertClassHygiene">
+        insert into tb_class_hygiene(sweep_floor,mopping_floor,clean_blackboard,hygiene_date,class_id)
+        values(#{sweepFloor.id},#{moppingFloor.id},#{cleanBlackboard.id},#{hygieneDate},#{classId})
+    </insert>
+    <update id="updateClassHygiene">
+        update tb_class_hygiene set sweep_floor = #{sweepFloor.id},mopping_floor = #{moppingFloor.id},
+                                    clean_blackboard = #{cleanBlackboard.id},hygiene_date=#{hygieneDate}
+        where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.ClassCourseSixMapper">
+
+    <insert id="insertCourseSixMessage">
+        insert into tb_class_course_six(greet_one,greet_two,preside_over,lecture_one,lecture_two,course_six_date,class_id)
+        values(
+        #{greetOne.id},
+        #{greetTwo.id},
+        #{presideOver.id},
+        #{lectureOne.id},
+        #{lectureTwo.id},
+        #{courseSixDate},
+        #{classId}
+        )
+    </insert>
+    <update id="updateCourseSixMessage">
+        update tb_class_course_six set
+greet_one = #{greetOne.id},
+greet_two = #{greetTwo.id},
+preside_over = #{presideOver.id},
+lecture_one = #{lectureOne.id},
+lecture_two = #{lectureTwo.id},
+course_six_date = #{courseSixDate}
+where id = #{id}
+    </update>
+</mapper>

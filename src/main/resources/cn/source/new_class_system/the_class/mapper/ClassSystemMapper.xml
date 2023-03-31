@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.ClassSystemMapper">
+
+    <resultMap id="selectClassIntroduceMore" type="cn.source.new_class_system.the_class.entity.ClassSystem">
+
+        <id column="id" property="id"></id>
+        <result column="class_code" property="classCode"></result>
+        <result column="except_name" property="exceptName"></result>
+        <result column="num" property="num"></result>
+        <association property="classSystemDetail" javaType="cn.source.new_class_system.the_class.entity.ClassSystemDetail">
+            <id column="tdId" property="id"></id>
+            <result column="class_introduce" property="classIntroduce"></result>
+            <result column="class_role" property="classRole"></result>
+            <result column="class_honor" property="classHonor"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectClassIntroduce" resultMap="selectClassIntroduceMore">
+        select
+        ts.id,
+        ts.class_code,
+        ts.except_name,
+        ts.num,
+        td.id as tdId,
+        td.class_introduce,
+        td.class_role,
+        td.class_honor
+        from tb_class_system ts,tb_class_system_detail td
+        where ts.id = #{classId}
+          and ts.class_detail_id = td.id
+    </select>
+</mapper>

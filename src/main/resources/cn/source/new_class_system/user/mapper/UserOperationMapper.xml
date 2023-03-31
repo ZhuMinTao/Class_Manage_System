@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.user.mapper.UserOperationMapper">
+
+    <resultMap id="selectUserDetailMore" type="cn.source.new_class_system.user.entity.User">
+        <id column="id" property="id"></id>
+        <result column="user_code" property="userCode"></result>
+        <result column="email" property="email"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="class_id" property="classId"></result>
+        <association property="userDetail" javaType="cn.source.new_class_system.user.entity.UserDetail">
+            <id column="tudId" property="id"></id>
+            <result column="sex" property="sex"></result>
+            <result column="profile_photo" property="profilePhoto"></result>
+            <result column="phone_number" property="phoneNumber"></result>
+            <result column="sn" property="sn"></result>
+        </association>
+        <association property="classSystem" javaType="cn.source.new_class_system.the_class.entity.ClassSystem">
+            <id column="tcId" property="id"></id>
+            <result column="class_code" property="classCode"></result>
+            <result column="except_name" property="exceptName"></result>
+            <result column="num" property="num"></result>
+            <association property="instructor" javaType="cn.source.new_class_system.user.entity.User">
+                <id column="tu2Id" property="id"></id>
+                <result column="tu2UserName" property="userName"></result>
+                <result column="email" property="email"></result>
+            </association>
+        </association>
+    </resultMap>
+    <select id="selectUserDetail" resultMap="selectUserDetailMore">
+        select
+            tu.id,tu.user_code,tu.email,tu.user_name,tu.class_id
+             <if test="user.userDetailId!=null">
+                 ,tud.id as tudId,tud.sex,tud.profile_photo,tud.phone_number,tud.sn
+             </if>
+             <if test="user.classId!=null">
+                 ,tc.id as tcId,tc.class_code,tc.except_name,tc.num
+                 ,tu2.id as tu2Id,tu2.user_name as tu2UserName
+             </if>
+
+        from tb_user tu
+             <if test="user.userDetailId!=null">
+                 ,tb_user_detail tud
+             </if>
+            <if test="user.classId!=null">
+                ,tb_class_system tc
+                ,tb_user tu2
+            </if>
+        <where>
+            <if test="user.userDetailId!=null">
+                and tu.user_detail_id = tud.id
+            </if>
+            <if test="user.classId!=null">
+                and tc.id = tu.class_id
+                and tu2.id = tc.user_id
+            </if>
+            and tu.id = #{user.id}
+        </where>
+    </select>
+</mapper>

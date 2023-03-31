@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.ClassPlanMapper">
+
+    <resultMap id="selectHygiene" type="cn.source.new_class_system.the_class.entity.ClassHygiene">
+        <id column="id" property="id"></id>
+        <result column="hygiene_date" property="hygieneDate"></result>
+        <association property="sweepFloor" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu1Id" property="id"></id>
+            <result column="tu1username" property="userName"></result>
+        </association>
+        <association property="moppingFloor" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu2Id" property="id"></id>
+            <result column="tu2username" property="userName"></result>
+        </association>
+        <association property="cleanBlackboard" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu3Id" property="id"></id>
+            <result column="tu3username" property="userName"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="selectClassHygiene" resultMap="selectHygiene">
+        select th.id,
+               th.hygiene_date,
+               tu1.user_name as tu1username,
+               tu1.id as tu1Id,
+               tu2.user_name as tu2username,
+               tu2.id as tu2Id,
+               tu3.user_name as tu3username,
+               tu3.id as tu3Id
+        from tb_class_hygiene th,tb_user tu1,tb_user tu2,tb_user tu3
+        where th.sweep_floor = tu1.id
+          and th.mopping_floor = tu2.id
+          and th.clean_blackboard = tu3.id
+          <if test="date!=null">
+              and hygiene_date=#{date}
+          </if>
+          <if test="afterDate!=null">
+              and hygiene_date>=#{afterDate}
+          </if>
+          and th.class_id = #{classId}
+        order by hygiene_date
+    </select>
+
+    <resultMap id="selectCourseSix" type="cn.source.new_class_system.the_class.entity.ClassCourseSix">
+        <id column="id" property="id"></id>
+        <result column="course_six_date" property="courseSixDate"></result>
+        <association property="greetOne" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu1Id" property="id"></id>
+            <result column="tu1username" property="userName"></result>
+        </association>
+        <association property="greetTwo" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu2Id" property="id"></id>
+            <result column="tu2username" property="userName"></result>
+        </association>
+        <association property="presideOver" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu3Id" property="id"></id>
+            <result column="tu3username" property="userName"></result>
+        </association>
+        <association property="lectureOne" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu3Id" property="id"></id>
+            <result column="tu4username" property="userName"></result>
+        </association>
+        <association property="lectureTwo" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tu3Id" property="id"></id>
+            <result column="tu5username" property="userName"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="selectCourseSix" resultMap="selectCourseSix">
+        select ts.id,
+               ts.course_six_date,
+               tu1.user_name as tu1username,
+               tu1.id as tu1Id,
+               tu2.user_name as tu2username,
+               tu2.id as tu2Id,
+               tu3.user_name as tu3username,
+               tu3.id as tu3Id,
+               tu4.user_name as tu4username,
+               tu4.id as tu4Id,
+               tu5.user_name as tu5username,
+               tu5.id as tu5Id
+        from tb_class_course_six ts,tb_user tu1,tb_user tu2,tb_user tu3,tb_user tu4, tb_user tu5
+        where ts.greet_one = tu1.id
+          and ts.greet_two = tu2.id
+          and ts.preside_over = tu3.id
+          and ts.lecture_one = tu4.id
+          and ts.lecture_two = tu5.id
+        <if test="date!=null">
+            and ts.course_six_date=#{date}
+        </if>
+        <if test="afterDate!=null">
+            and ts.course_six_date>=#{afterDate}
+        </if>
+        and ts.class_id = #{classId}
+        order by ts.course_six_date
+    </select>
+
+
+</mapper>

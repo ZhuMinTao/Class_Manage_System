@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.UploadAddressMapper">
+
+    <resultMap id="passTaskIdSelectTaskListUser" type="cn.source.new_class_system.the_class.entity.UploadAddress">
+        <id column="id" property="id"></id>
+        <result column="upload_date" property="uploadDate"/>
+        <result column="file_url" property="fileUrl"/>
+        <result column="task_id" property="taskId"/>
+        <result column="suffix" property="suffix"/>
+        <association property="user" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tuId" property="id"></id>
+            <result column="user_code" property="userCode"/>
+            <result column="user_name" property="userName"/>
+        </association>
+    </resultMap>
+
+    <select id="passTaskIdSelectUploadAddress"
+            resultMap="passTaskIdSelectTaskListUser">
+        select
+            tua.id,
+            upload_date,
+            file_url,
+            task_id,
+            suffix,
+            tu.id as tuId,
+            tu.user_code,
+            tu.user_name
+        from tb_upload_address tua,tb_user tu where tua.user_id = tu.id and tua.task_id = #{taskId}
+    </select>
+</mapper>

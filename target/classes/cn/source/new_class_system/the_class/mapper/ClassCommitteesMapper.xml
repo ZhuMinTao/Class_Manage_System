@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.the_class.mapper.ClassCommitteesMapper">
+
+    <resultMap id="selectCommitteeUser" type="cn.source.new_class_system.the_class.entity.ClassCommittees">
+        <id column="id" property="id"></id>
+        <result column="sn" property="sn"></result>
+        <association property="user" javaType="cn.source.new_class_system.user.entity.User">
+            <id column="tuId" property="id"></id>
+            <result column="user_name" property="userName"></result>
+            <result column="email" property="email"></result>
+            <result column="user_code" property="userCode"></result>
+            <association property="userDetail" javaType="cn.source.new_class_system.user.entity.UserDetail">
+                <id column="tudId" property="id"></id>
+                <result column="profile_photo" property="profilePhoto"></result>
+                <result column="phone_number" property="phoneNumber"></result>
+                <result column="sex" property="sex"></result>
+            </association>
+        </association>
+        <association property="classSystem">
+            <result column="class_code" property="classCode"></result>
+            <result column="except_name" property="exceptName"></result>
+            <result column="num" property="num"></result>
+        </association>
+
+    </resultMap>
+
+    <select id="selectCommittee" resultMap="selectCommitteeUser">
+        select
+            tc.id,
+            tc.sn,
+            tu.id as tuId,
+            tu.user_name,
+            tu.email,
+            tu.user_code,
+            tud.id as tudId,
+            tud.profile_photo,
+            tud.phone_number,
+            tud.sex,
+            ts.class_code,
+            ts.except_name,
+            ts.num
+        from tb_class_committees tc,tb_user tu,tb_user_detail tud,tb_class_system ts
+        where tc.user_id = tu.id
+          and tc.class_id = #{classId}
+        and tu.user_detail_id=tud.id
+        and tc.class_id = ts.id
+    </select>
+</mapper>

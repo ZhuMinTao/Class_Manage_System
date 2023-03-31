@@ -1,0 +1,67 @@
+#端口
+server:
+  port: 80
+oss:
+  http_file_url: https://class-system.oss-cn-beijing.aliyuncs.com/
+#连接池
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/new_class_system?&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+#redis配置
+  redis:
+    #使用第一个数据库
+    database: 0
+    #redis的主机
+    host: 127.0.0.1
+    #主机的端口
+    port: 6379
+    #密码
+    password: 123456
+    #连接池
+    jedis:
+      pool:
+        #最大超时时间
+        max-wait: 2000ms
+        #最大最小空闲数
+        min-idle: 2
+        max-idle: 8
+        #最大连接数8个
+        max-active: 8
+  #邮箱配置
+  mail:
+#    port: 465
+    host: smtp.qq.com  #服务商邮箱主机
+    username: 1981166068@qq.com #发送邮箱的账号
+    password: aacesbimzztrcaib    #qq授权码
+    properties:
+      mail:
+        smtp:
+          auth: true  #进行授权认证
+          starttls: #SMTP加密
+            enable: true
+            required: true
+
+#mybatis
+mybatis:
+  #扫描mapper的xml文件
+  mapper-locations: classpath:cn/source/new_class_system/*/*Mapper.xml
+  #将数据库中的下划线转化为大驼峰
+  configuration:
+    map-underscore-to-camel-case: true
+#配置mybatisPlus前缀
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tb_
+      id-type: auto
+logging:
+  level:
+    cn.source.new_class_system: debug

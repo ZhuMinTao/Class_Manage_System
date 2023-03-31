@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.new_class_system.user.mapper.PowerNameMapper">
+
+    <select id="selectUserPowerList" resultType="cn.source.new_class_system.user.entity.PowerName">
+        select
+            tpw.id,power_name,url,power_introduce,menu_id
+        from tb_user_role tr,tb_role_power tp,tb_power tpw
+        where tr.user_id=${id}
+          and tr.role_id=tp.role_id
+          and tp.power_id=tpw.id
+    </select>
+
+    <resultMap id="selectRolePower" type="cn.source.new_class_system.user.entity.Role">
+        <id column="id" property="id"></id>
+        <result column="role_name" property="roleName"></result>
+        <collection property="powerNameList" column="{trId=id}" select="selectPowerListByRoleId"  javaType="ArrayList" ofType="cn.source.new_class_system.user.entity.PowerName"></collection>
+    </resultMap>
+
+    <resultMap id="powerList" type="cn.source.new_class_system.user.entity.PowerName">
+        <id property="id" column="id"></id>
+        <result property="powerIntroduce" column="powerIntroduce"></result>
+    </resultMap>
+
+    <select id="selectPowerListByRoleId" resultMap="powerList">
+        select power_introduce as powerIntroduce,
+               tp.id as id
+        from tb_power tp,tb_role_power trp
+        where trp.role_id=${trId} and tp.id = trp.power_id
+    </select>
+
+
+
+
+    <select id="selectPowerList" resultMap="selectRolePower">
+        select id ,role_name
+        from tb_role
+    </select>
+
+
+
+
+    <select id="selectUserRoleListByUserId" resultMap="getRolePowerList">
+        select
+            tr.id,tr.role_name
+        from tb_user_role tur,tb_role tr
+        where tur.user_id=#{userId}
+          and tur.role_id=tr.id
+
+    </select>
+    <resultMap id="getRolePowerList" type="cn.source.new_class_system.user.entity.Role">
+        <id column="id" property="id"></id>
+        <result column="role_name" property="roleName"></result>
+        <collection property="powerNameList" javaType="ArrayList" ofType="cn.source.new_class_system.user.entity.PowerName" column="{trId=id}"
+                    select="getPowerList"></collection>
+    </resultMap>
+
+
+    <select id="getPowerList" resultType="cn.source.new_class_system.user.entity.PowerName">
+        select
+            tp.id,
+            tp.power_introduce
+        from
+            tb_role_power trp,tb_power tp
+        where trp.role_id = ${trId}
+          and trp.power_id = tp.id
+    </select>
+</mapper>
